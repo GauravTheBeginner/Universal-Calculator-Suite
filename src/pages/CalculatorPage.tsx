@@ -13,7 +13,6 @@ import { ProgrammingCalculator } from '../components/calculators/ProgrammingCalc
 import { DateCalculator } from '../components/calculators/DateCalculator';
 import TemperatureCalculator from '../components/calculators/TemperatureCalculator';
 
-
 const calculatorComponents: Record<string, React.FC> = {
   scientific: ScientificCalculator,
   financial: FinancialCalculator,
@@ -23,7 +22,7 @@ const calculatorComponents: Record<string, React.FC> = {
   unit: UnitConverter,
   physics: PhysicsCalculator,
   programming: ProgrammingCalculator,
-  date: DateCalculator, 
+  date: DateCalculator,
   temperature: TemperatureCalculator
 };
 

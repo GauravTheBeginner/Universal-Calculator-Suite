@@ -1,4 +1,4 @@
-
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CalculatorCard } from '../components/CalculatorCard';
 import { calculatorCategories } from '../data/calculators';

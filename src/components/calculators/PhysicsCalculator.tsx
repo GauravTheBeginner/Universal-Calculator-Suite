@@ -6,25 +6,21 @@ export function PhysicsCalculator() {
   const [values, setValues] = useState<Record<string, string>>({});
   const [result, setResult] = useState('');
 
-  type FormulaUnits = {
-    [key: string]: string;
-  };
-
   const formulas = {
     velocity: {
       name: 'Velocity (v = d/t)',
       inputs: ['distance', 'time'],
-      units: { distance: 'meters', time: 'seconds', result: 'm/s' } as FormulaUnits
+      units: { distance: 'meters', time: 'seconds', result: 'm/s' }
     },
     force: {
       name: 'Force (F = ma)',
       inputs: ['mass', 'acceleration'],
-      units: { mass: 'kg', acceleration: 'm/s²', result: 'N' } as FormulaUnits
+      units: { mass: 'kg', acceleration: 'm/s²', result: 'N' }
     },
     energy: {
       name: 'Kinetic Energy (E = ½mv²)',
       inputs: ['mass', 'velocity'],
-      units: { mass: 'kg', velocity: 'm/s', result: 'J' } as FormulaUnits
+      units: { mass: 'kg', velocity: 'm/s', result: 'J' }
     }
   };
 
@@ -69,7 +65,7 @@ export function PhysicsCalculator() {
 
         <button
           onClick={handleCalculate}
-          className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition text-lg font-medium shadow-md"
+          className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors"
         >
           Calculate
         </button>

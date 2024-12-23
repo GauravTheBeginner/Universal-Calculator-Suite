@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 export function StatisticsCalculator() {
   const [numbers, setNumbers] = useState('');
@@ -30,8 +30,7 @@ export function StatisticsCalculator() {
     });
     const maxFreq = Math.max(...Object.values(frequency));
     const mode = Object.entries(frequency)
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .filter(([_, freq]) => freq === maxFreq)
+      .filter(([,freq]) => freq === maxFreq)
       .map(([num]) => parseFloat(num));
 
     // Calculate standard deviation
@@ -53,13 +52,13 @@ export function StatisticsCalculator() {
             value={numbers}
             onChange={(e) => setNumbers(e.target.value)}
             placeholder="e.g., 1, 2, 3, 4, 5"
-           className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3 text-gray-900"
+            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3 text-gray-900"
           />
         </div>
 
         <button
           onClick={calculateStats}
-          className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition text-lg font-medium shadow-md"
+          className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors"
         >
           Calculate Statistics
         </button>
