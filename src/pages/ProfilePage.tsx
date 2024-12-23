@@ -84,7 +84,7 @@ export function ProfilePage() {
               type="email"
               value={user?.email || ''}
               disabled
-              className="mt-1 block w-full rounded-lg border-gray-300 bg-gray-50 cursor-not-allowed"
+              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3 text-gray-900"
             />
           </div>
 
@@ -96,7 +96,7 @@ export function ProfilePage() {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3 text-gray-900"
             />
           </div>
 
