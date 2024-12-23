@@ -13,10 +13,12 @@ export function ProfilePage() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (profile?.username) {
-      setUsername(profile.username);
+    if (user?.email) {
+      const extractedUsername = user.email.split('@')[0];
+      setUsername(extractedUsername);
     }
-  }, [profile]);
+  }, [user]);
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
