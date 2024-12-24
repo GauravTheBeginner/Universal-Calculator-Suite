@@ -23,7 +23,7 @@ export function UnitConverter() {
     <div className="bg-white rounded-lg shadow-lg p-6">
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+          <label className="block text-sm font-medium text-gray-700">Category</label>
           <select
             value={category}
             onChange={(e) => {
@@ -31,7 +31,7 @@ export function UnitConverter() {
               setFromUnit(categories[e.target.value as keyof typeof categories][0]);
               setToUnit(categories[e.target.value as keyof typeof categories][1]);
             }}
-            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3 text-gray-900"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
           >
             {Object.keys(categories).map((cat) => (
               <option key={cat} value={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>
@@ -40,22 +40,22 @@ export function UnitConverter() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Value</label>
+          <label className="block text-sm font-medium text-gray-700">Value</label>
           <input
             type="number"
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3 text-gray-900"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
           />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">From</label>
+            <label className="block text-sm font-medium text-gray-700">From</label>
             <select
               value={fromUnit}
               onChange={(e) => setFromUnit(e.target.value)}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3 text-gray-900"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             >
               {categories[category as keyof typeof categories].map((unit) => (
                 <option key={unit} value={unit}>{unit}</option>
@@ -64,11 +64,11 @@ export function UnitConverter() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">To</label>
+            <label className="block text-sm font-medium text-gray-700">To</label>
             <select
               value={toUnit}
               onChange={(e) => setToUnit(e.target.value)}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3 text-gray-900"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             >
               {categories[category as keyof typeof categories].map((unit) => (
                 <option key={unit} value={unit}>{unit}</option>

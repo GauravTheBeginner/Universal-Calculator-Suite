@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useCalculatorWithHistory } from '../../hooks/useCalculatorWithHistory';
 
 export function StatisticsCalculator() {
   const [numbers, setNumbers] = useState('');
@@ -8,8 +9,9 @@ export function StatisticsCalculator() {
     mode: number[];
     stdDev: number;
   } | null>(null);
+  const { saveToHistory, error } = useCalculatorWithHistory('statistics');
 
-  const calculateStats = () => {
+  const calculateStats = async () => {
     const nums = numbers.split(',').map(n => parseFloat(n.trim())).filter(n => !isNaN(n));
     
     if (nums.length === 0) return;
@@ -30,21 +32,28 @@ export function StatisticsCalculator() {
     });
     const maxFreq = Math.max(...Object.values(frequency));
     const mode = Object.entries(frequency)
-      .filter(([,freq]) => freq === maxFreq)
+      .filter(([, freq]) => freq === maxFreq)
       .map(([num]) => parseFloat(num));
 
     // Calculate standard deviation
     const variance = nums.reduce((acc, num) => acc + Math.pow(num - mean, 2), 0) / nums.length;
     const stdDev = Math.sqrt(variance);
 
-    setStats({ mean, median, mode, stdDev });
+    const results = { mean, median, mode, stdDev };
+    setStats(results);
+
+    // Save to history
+    await saveToHistory(
+      { numbers: nums },
+      `Mean: ${mean.toFixed(2)}, Median: ${median.toFixed(2)}, StdDev: ${stdDev.toFixed(2)}`
+    );
   };
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6">
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700">
             Enter numbers (comma-separated)
           </label>
           <input
@@ -52,9 +61,11 @@ export function StatisticsCalculator() {
             value={numbers}
             onChange={(e) => setNumbers(e.target.value)}
             placeholder="e.g., 1, 2, 3, 4, 5"
-            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3 text-gray-900"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
           />
         </div>
+
+        {error && <div className="text-red-500 text-sm">{error}</div>}
 
         <button
           onClick={calculateStats}

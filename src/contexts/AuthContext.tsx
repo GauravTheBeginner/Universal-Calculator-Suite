@@ -6,7 +6,7 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string, username: string) => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -17,7 +17,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check active sessions and sets the user
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       setLoading(false);
@@ -30,19 +29,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const createInitialProfile = async (userId: string) => {
-    const { error } = await supabase
-      .from('profiles')
-      .insert([
-        {
-          id: userId,
-          username: null,
-          avatar_url: null,
-        }
-      ]);
-    
-    if (error && error.code !== '23505') { // Ignore duplicate key violations
+  const createInitialProfile = async (userId: string, username: string) => {
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .insert([
+          {
+            id: userId,
+            username,
+            avatar_url: null,
+          }
+        ]);
+      
+      if (error && error.code !== '23505') { // Ignore unique constraint violations
+        throw error;
+      }
+    } catch (error) {
       console.error('Error creating profile:', error);
+      throw error;
     }
   };
 
@@ -51,12 +55,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (error) throw error;
   };
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = async (email: string, password: string, username: string) => {
     const { data, error } = await supabase.auth.signUp({ email, password });
     if (error) throw error;
     
     if (data.user) {
-      await createInitialProfile(data.user.id);
+      await createInitialProfile(data.user.id, username);
     }
   };
 

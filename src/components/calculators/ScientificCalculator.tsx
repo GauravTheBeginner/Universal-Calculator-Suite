@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { CalculatorButton } from '../ui/CalculatorButton';
-import { evaluate } from '../../utils/mathEvaluator';
+import { evaluate } from 'mathjs';
+import { useCalculatorWithHistory } from '../../hooks/useCalculatorWithHistory';
 
 export function ScientificCalculator() {
   const [display, setDisplay] = useState('0');
   const [previousValue, setPreviousValue] = useState('');
   const [operation, setOperation] = useState('');
+  const { saveToHistory, error } = useCalculatorWithHistory('scientific');
 
   const handleNumberClick = (num: string) => {
     setDisplay(display === '0' ? num : display + num);
@@ -17,12 +19,19 @@ export function ScientificCalculator() {
     setDisplay('0');
   };
 
-  const handleEquals = () => {
+  const handleEquals = async () => {
     try {
-      const result = evaluate(`${previousValue}${operation}${display}`);
+      const expression = `${previousValue}${operation}${display}`;
+      const result = evaluate(expression);
       setDisplay(result.toString());
       setPreviousValue('');
       setOperation('');
+      
+      // Save to history
+      await saveToHistory(
+        { expression },
+        result.toString()
+      );
     } catch (error) {
       console.log(error)
       setDisplay('Error');
@@ -39,6 +48,7 @@ export function ScientificCalculator() {
     <div className="bg-white rounded-lg shadow-lg p-6">
       <div className="bg-gray-100 p-4 rounded-lg mb-4">
         <div className="text-right text-2xl font-mono">{display}</div>
+        {error && <div className="text-red-500 text-sm mt-1">{error}</div>}
       </div>
       
       <div className="grid grid-cols-4 gap-2">

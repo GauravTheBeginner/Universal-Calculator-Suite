@@ -15,23 +15,23 @@ export function CalculusCalculator() {
     <div className="bg-white rounded-lg shadow-lg p-6">
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Expression</label>
+          <label className="block text-sm font-medium text-gray-700">Expression</label>
           <input
             type="text"
             value={expression}
             onChange={(e) => setExpression(e.target.value)}
             placeholder="e.g., x^2 + 2x + 1"
-            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3 text-gray-900"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Variable</label>
+          <label className="block text-sm font-medium text-gray-700">Variable</label>
           <input
             type="text"
             value={variable}
             onChange={(e) => setVariable(e.target.value)}
-            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3 text-gray-900"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
           />
         </div>
 

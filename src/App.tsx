@@ -6,6 +6,7 @@ import { HomePage } from './pages/HomePage';
 import { CalculatorPage } from './pages/CalculatorPage';
 import { AuthPage } from './pages/AuthPage';
 import { ProfilePage } from './pages/ProfilePage';
+import { HistoryPage } from './pages/HistoryPage';
 import { useAuth } from './contexts/AuthContext';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
@@ -44,6 +45,17 @@ function AppRoutes() {
             <div className="min-h-screen bg-gray-50">
               <Header />
               <CalculatorPage />
+            </div>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/history"
+        element={
+          <PrivateRoute>
+            <div className="min-h-screen bg-gray-50">
+              <Header />
+              <HistoryPage />
             </div>
           </PrivateRoute>
         }

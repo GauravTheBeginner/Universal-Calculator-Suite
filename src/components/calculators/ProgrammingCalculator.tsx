@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
+import { useCalculatorWithHistory } from '../../hooks/useCalculatorWithHistory';
 
 export function ProgrammingCalculator() {
   const [decimal, setDecimal] = useState('');
   const [binary, setBinary] = useState('');
   const [hex, setHex] = useState('');
   const [octal, setOctal] = useState('');
+  const { saveToHistory, error } = useCalculatorWithHistory('programming');
 
-  const handleDecimalChange = (value: string) => {
+  const handleDecimalChange = async (value: string) => {
     if (value === '') {
       setDecimal('');
       setBinary('');
@@ -18,13 +20,22 @@ export function ProgrammingCalculator() {
     const num = parseInt(value);
     if (!isNaN(num)) {
       setDecimal(value);
-      setBinary(num.toString(2));
-      setHex(num.toString(16).toUpperCase());
-      setOctal(num.toString(8));
+      const bin = num.toString(2);
+      const hexVal = num.toString(16).toUpperCase();
+      const octVal = num.toString(8);
+      
+      setBinary(bin);
+      setHex(hexVal);
+      setOctal(octVal);
+
+      await saveToHistory(
+        { decimal: num },
+        `Dec: ${num}, Bin: ${bin}, Hex: ${hexVal}, Oct: ${octVal}`
+      );
     }
   };
 
-  const handleBinaryChange = (value: string) => {
+  const handleBinaryChange = async (value: string) => {
     if (value === '') {
       setDecimal('');
       setBinary('');
@@ -37,8 +48,16 @@ export function ProgrammingCalculator() {
       const num = parseInt(value, 2);
       setBinary(value);
       setDecimal(num.toString());
-      setHex(num.toString(16).toUpperCase());
-      setOctal(num.toString(8));
+      const hexVal = num.toString(16).toUpperCase();
+      const octVal = num.toString(8);
+      
+      setHex(hexVal);
+      setOctal(octVal);
+
+      await saveToHistory(
+        { binary: value },
+        `Dec: ${num}, Bin: ${value}, Hex: ${hexVal}, Oct: ${octVal}`
+      );
     }
   };
 
@@ -46,18 +65,18 @@ export function ProgrammingCalculator() {
     <div className="bg-white rounded-lg shadow-lg p-6">
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Decimal</label>
+          <label className="block text-sm font-medium text-gray-700">Decimal</label>
           <input
             type="text"
             value={decimal}
             onChange={(e) => handleDecimalChange(e.target.value)}
-            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3 text-gray-900"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             placeholder="Enter decimal number"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Binary</label>
+          <label className="block text-sm font-medium text-gray-700">Binary</label>
           <input
             type="text"
             value={binary}
@@ -68,7 +87,7 @@ export function ProgrammingCalculator() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Hexadecimal</label>
+          <label className="block text-sm font-medium text-gray-700">Hexadecimal</label>
           <input
             type="text"
             value={hex}
@@ -78,7 +97,7 @@ export function ProgrammingCalculator() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Octal</label>
+          <label className="block text-sm font-medium text-gray-700">Octal</label>
           <input
             type="text"
             value={octal}
@@ -86,6 +105,8 @@ export function ProgrammingCalculator() {
             className="mt-1 block w-full font-mono rounded-md border-gray-300 bg-gray-50"
           />
         </div>
+
+        {error && <div className="text-red-500 text-sm">{error}</div>}
       </div>
     </div>
   );

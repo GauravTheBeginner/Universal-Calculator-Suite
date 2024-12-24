@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
+import { useCalculatorWithHistory } from '../../hooks/useCalculatorWithHistory';
 
 export function DateCalculator() {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [days, setDays] = useState('');
   const [result, setResult] = useState('');
+  const { saveToHistory, error } = useCalculatorWithHistory('date');
 
-  const calculateDateDifference = () => {
+  const calculateDateDifference = async () => {
     const start = new Date(startDate);
     const end = new Date(endDate);
     
@@ -17,10 +19,16 @@ export function DateCalculator() {
 
     const diffTime = Math.abs(end.getTime() - start.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    setResult(`Difference: ${diffDays} days`);
+    const resultText = `Difference: ${diffDays} days`;
+    setResult(resultText);
+
+    await saveToHistory(
+      { startDate, endDate },
+      resultText
+    );
   };
 
-  const addDays = () => {
+  const addDays = async () => {
     const start = new Date(startDate);
     if (isNaN(start.getTime()) || !days) {
       setResult('Invalid input');
@@ -29,7 +37,13 @@ export function DateCalculator() {
 
     const result = new Date(start);
     result.setDate(result.getDate() + parseInt(days));
-    setResult(`Result: ${result.toLocaleDateString()}`);
+    const resultText = `Result: ${result.toLocaleDateString()}`;
+    setResult(resultText);
+
+    await saveToHistory(
+      { startDate, daysToAdd: days },
+      resultText
+    );
   };
 
   return (
@@ -39,24 +53,26 @@ export function DateCalculator() {
           <h3 className="text-lg font-medium text-gray-900 mb-4">Date Difference</h3>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+              <label className="block text-sm font-medium text-gray-700">Start Date</label>
               <input
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3 text-gray-900"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">End Date</label>
+              <label className="block text-sm font-medium text-gray-700">End Date</label>
               <input
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3 text-gray-900"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               />
             </div>
+
+            {error && <div className="text-red-500 text-sm">{error}</div>}
 
             <button
               onClick={calculateDateDifference}
@@ -71,23 +87,23 @@ export function DateCalculator() {
           <h3 className="text-lg font-medium text-gray-900 mb-4">Add/Subtract Days</h3>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+              <label className="block text-sm font-medium text-gray-700">Start Date</label>
               <input
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3 text-gray-900"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Number of Days</label>
+              <label className="block text-sm font-medium text-gray-700">Number of Days</label>
               <input
                 type="number"
                 value={days}
                 onChange={(e) => setDays(e.target.value)}
                 placeholder="Enter positive or negative number"
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3 text-gray-900"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               />
             </div>
 

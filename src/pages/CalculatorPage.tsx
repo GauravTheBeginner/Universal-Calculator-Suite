@@ -11,7 +11,6 @@ import { UnitConverter } from '../components/calculators/UnitConverter';
 import { PhysicsCalculator } from '../components/calculators/PhysicsCalculator';
 import { ProgrammingCalculator } from '../components/calculators/ProgrammingCalculator';
 import { DateCalculator } from '../components/calculators/DateCalculator';
-import TemperatureCalculator from '../components/calculators/TemperatureCalculator';
 
 const calculatorComponents: Record<string, React.FC> = {
   scientific: ScientificCalculator,
@@ -22,8 +21,7 @@ const calculatorComponents: Record<string, React.FC> = {
   unit: UnitConverter,
   physics: PhysicsCalculator,
   programming: ProgrammingCalculator,
-  date: DateCalculator,
-  temperature: TemperatureCalculator
+  date: DateCalculator
 };
 
 export function CalculatorPage() {

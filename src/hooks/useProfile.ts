@@ -25,7 +25,6 @@ export function useProfile() {
 
     try {
       // First try to get the existing profile
-      // eslint-disable-next-line prefer-const
       let { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -59,7 +58,6 @@ export function useProfile() {
 
       setProfile(data);
     } catch (error) {
-      
       console.error('Error fetching profile:', error);
     } finally {
       setLoading(false);
